@@ -11,21 +11,25 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
-
-      - name: Set up JDK 11
-        uses: actions/setup-java@v4
-        with:
-          java-version: '11'
-          distribution: 'temurin'
-
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
-
-      - name: Start SUT
-        run: |
-          java -jar artifacts/app-replan-delivery.jar &
-          sleep 5
-
-      - name: Test with Gradle
-        run: ./gradlew clean test
+    - uses: actions/checkout@v4
+    
+    - name: Set up JDK 11
+      uses: actions/setup-java@v4
+      with:
+        java-version: '11'
+        distribution: 'temurin'
+    
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
+    
+    - name: Start SUT
+      run: |
+        nohup java -jar artifacts/app-replan-delivery.jar &
+        sleep 10
+      shell: bash
+    
+    - name: Check SUT is running
+      run: curl --retry 5 --retry-delay 2 http://localhost:9999
+    
+    - name: Test with Gradle
+      run: ./gradlew clean test
