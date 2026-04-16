@@ -21,10 +21,6 @@ dependencies {
 
 test {
     useJUnitPlatform()
-    systemProperty 'selenide.headless', System.getProperty('selenide.headless', 'true')
-    systemProperty 'selenide.browser', 'chrome'
-    testLogging {
-        events "passed", "skipped", "failed"
-        exceptionFormat "full"
-    }
+    systemProperty 'selenide.headless', System.getProperty('selenide.headless', 'false')
+
 }
